@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void startAutoScroll() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -118,4 +119,5 @@ public class MainActivity extends AppCompatActivity {
         adapter.stopListening();
         handler.removeCallbacksAndMessages(null);
     }
+
 }

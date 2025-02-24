@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sur Durango</string>
+    <string name="livee">TODO</string>
+    <string name="log">TODO</string>
+    <string name="pause">TODO</string>
+    <string name="back">background\n</string>
 </resources>
