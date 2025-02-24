@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "755002495720",
+    "project_id": "sur-durango",
+    "storage_bucket": "sur-durango.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755002495720:android:fd5b349d97d0febdcbef5d",
+        "android_client_info": {
+          "package_name": "com.example.surdurango"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLQEM4mQJZB1lV2MeoO-f9rxHMqaBMmZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
