@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/textview"
-        android:layout_width="430dp"
-        android:layout_height="265dp"
+        android:layout_width="413dp"
+        android:layout_height="266dp"
+        android:background="@android:color/transparent"
         android:textAlignment="center"
-        android:textColor="@color/white"
         android:textSize="32dp" />
 </LinearLayout>
