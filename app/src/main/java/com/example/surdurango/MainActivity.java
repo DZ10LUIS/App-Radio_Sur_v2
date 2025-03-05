@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView img_play, img_pause, facebookImageView, whatsappImageView, sitiowebIV;
+    ImageView img_play, img_pause, facebookImageView, whatsappImageView, sitiowebIV, logo;
     private RecyclerView recyclerView;
     private CarouselAdapter adapter;
     private List<String> dataList = new ArrayList<>();
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        logo = findViewById(R.id.logo);
         img_play = findViewById(R.id.play);
         img_pause = findViewById(R.id.pause);
         recyclerView = findViewById(R.id.recyclerView);
@@ -80,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        whatsappImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainActivity", "WhatsApp ImageView clicked");
+                // Llama al método para obtener el número dinámico desde Firebase
+                retrieveWhatsAppNumber();
+            }
+        });
+
         sitiowebIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,26 +98,68 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        whatsappImageView.setOnClickListener(new View.OnClickListener() {
+        logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("MainActivity", "WhatsApp ImageView clicked");
-                String whatsappUrl = "https://wa.me/5216751087260";
-                try {
-                    Uri uri = Uri.parse(whatsappUrl);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "URL de WhatsApp inválida", Toast.LENGTH_SHORT).show();
-                    Log.e("MainActivity", "Error al abrir URL de WhatsApp: " + e.getMessage());
-                }
+                Log.d("MainActivity", "Logo ImageView clicked");
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
 
         setupRecyclerView();
         startAutoScroll();
+    }
+
+    private void retrieveWhatsAppNumber() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference whatsappRef = database.child("LinkWpp");
+
+        whatsappRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Verifica si el nodo existe
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    if (value instanceof Long) {
+                        // Si el valor es un Long, conviértelo a String
+                        String whatsappNumber = String.valueOf(value);
+                        Log.d("MainActivity", "Número recuperado como Long: " + whatsappNumber);
+                        openWhatsApp(whatsappNumber);
+                    } else if (value instanceof String) {
+                        // Si el valor ya es String
+                        String whatsappNumber = (String) value;
+                        Log.d("MainActivity", "Número recuperado como String: " + whatsappNumber);
+                        openWhatsApp(whatsappNumber);
+                    } else {
+                        Log.e("MainActivity", "El nodo contiene un tipo de dato inesperado");
+                        Toast.makeText(MainActivity.this, "Número no disponible", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.e("MainActivity", "El nodo LinkWpp no existe en Firebase");
+                    Toast.makeText(MainActivity.this, "Número no disponible", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("MainActivity", "Error al acceder a Firebase: " + error.getMessage());
+            }
+        });
+    }
+
+
+    private void openWhatsApp(String number) {
+        String whatsappUrl = "https://wa.me/" + number;
+        try {
+            Uri uri = Uri.parse(whatsappUrl);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "Error al abrir WhatsApp", Toast.LENGTH_SHORT).show();
+            Log.e("MainActivity", "Error al iniciar Intent de WhatsApp: " + e.getMessage());
+        }
     }
 
     private void setupRecyclerView() {
@@ -161,3 +213,5 @@ public class MainActivity extends AppCompatActivity {
         handler.removeCallbacksAndMessages(null);
     }
 }
+
+

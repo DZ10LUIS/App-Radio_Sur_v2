@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/microph" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logo"
         android:layout_width="151dp"
         android:layout_height="76dp"
         android:background="@android:color/transparent"
